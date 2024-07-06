@@ -1,129 +1,46 @@
-// let runningTotals =0 ;
-// let buffer = "0";
-// let previousOperator;
-// const screen = document.querySelector(".screen");
+let runningTotal = 0;  // Holds the ongoing total for calculations
+let buffer = "0";     // Current number being entered or displayed
+let previousOperator; // Last operator used
+const screen = document.querySelector(".screen"); // Reference to the screen element to display numbers
 
-// function buttonClicked(value){
-//      if (isNaN(parseInt(value))){
-//           handleSymbol(value);
-
-//      }else{
-//           handleNumber(value);
-//      }
-//      rerender();
-// }
-// function handleMath(value){
-//      if(buffer ==="0"){
-//           // DO othing
-//           return;
-//      }
-// const intBuffer = parseInt(buffer);
-// if(runningTotal ===0 ){
-//      runningTotal = intBuffer;
-// }else{
-//      flushOperation(intBuffer);
-// }
-// previousOperator = value;
-
-// buffer = "0";
-// }
-
-// function flushOperation(intBuffer){
-//      if (previousOperator === "+"){
-//           runningTotal += intBuffer;
-//      }else if (previousOperator === "-"){
-//           runningTotal -= intBuffer;
-//      }else if (previousOperator === "x"){
-//           runningTotal *= intBuffer;
-//      }else {
-//           runningTotal/= intBuffer;
-
-//      }
-// }
-
-// function handleSymbol(value){
-//      switch(Value){
-//           case "C":
-//           buffer = "0"; 
-//           runningTotal = 0;
-//           break;
-//          case "=":
-//          if (previousOperator === null ){
-//               // need two numbers to do math 
-//            return;
-//          }
-//          flushOperation(parseInt(buffer));
-//          previousOperator = null ;
-//          buffer = +runningTotal;
-//          runningTotal = 0;
-//          break;
-//          case "←":
-//           if (buffer.length === 1){
-//                buffer = "0";
-//            }else{
-//                buffer = buffer .substring(0, buffer.length - 1);
-
-//            }break;
-//            case "+":
-//            case "-":
-//            case "x":
-//            case "÷":
-//                handleMath(value);
-//                break;
-            
-//      }
-// }
-// function rerender(){
-//      screen.innerText = buffer;
-// }
-// function init(){
-//      document.querySelector(".calc=buttons").addEventListener("click",function(evvent){
-//           buttonClicked(event.target.innerText);
-//      });
-// }
-// init(); //init update 
-
-
-let runningTotal = 0;
-let buffer = "0";
-let previousOperator;
-const screen = document.querySelector(".screen");
-
+// Main function called when any button is clicked
 function buttonClick(value) {
-  if (isNaN(parseInt(value))) {
-    handleSymbol(value);
+  if (isNaN(parseInt(value))) { // Check if the button clicked is not a number
+    handleSymbol(value);       // Handle as a symbol (operator or control)
   } else {
-    handleNumber(value);
+    handleNumber(value);       // Handle as a number
   }
-  rerender();
+  rerender();                  // Update the display
 }
 
+// Handle number button click
 function handleNumber(value) {
   if (buffer === "0") {
-    buffer = value;
+    buffer = value;            // Replace initial zero with the new number
   } else {
-    buffer += value;
+    buffer += value;           // Append new number to the buffer
   }
 }
 
+// Handle math operations (+, -, ×, ÷)
 function handleMath(value) {
   if (buffer === "0") {
-    // do nothing
+    // Do nothing if buffer is zero
     return;
   }
 
-  const intBuffer = parseInt(buffer);
+  const intBuffer = parseInt(buffer); // Convert buffer to an integer
   if (runningTotal === 0) {
-    runningTotal = intBuffer;
+    runningTotal = intBuffer; // Set running total if it is zero
   } else {
-    flushOperation(intBuffer);
+    flushOperation(intBuffer); // Perform the previous operation
   }
 
-  previousOperator = value;
-
-  buffer = "0";
+  previousOperator = value;   // Store the current operator
+  buffer = "0";               // Reset buffer
 }
 
+// Perform the arithmetic operation based on the previous operator
 function flushOperation(intBuffer) {
   if (previousOperator === "+") {
     runningTotal += intBuffer;
@@ -136,48 +53,51 @@ function flushOperation(intBuffer) {
   }
 }
 
+// Handle non-number button clicks
 function handleSymbol(value) {
   switch (value) {
-    case "C":
+    case "C":                   // Clear everything
       buffer = "0"; 
       runningTotal = 0;
       break;
-    case "=":
+    case "=":                   // Calculate result
       if (previousOperator === null) {
-        // need two numbers to do math
+        // Need two numbers to do math
         return;
       }
-      flushOperation(parseInt(buffer));
+      flushOperation(parseInt(buffer)); // Perform the last operation
       previousOperator = null;
-      buffer = +runningTotal;
-      runningTotal = 0;
+      buffer = +runningTotal;   // Display result
+      runningTotal = 0;         // Reset running total
       break;
-    case "":
+    case "←":                  // Handle backspace
       if (buffer.length === 1) {
-        buffer = "0";
+        buffer = "0";          // If buffer has only one character, reset to zero
       } else {
-        buffer = buffer.substring(0, buffer.length - 1);
+        buffer = buffer.substring(0, buffer.length - 1); // Remove last character
       }
       break;
     case "+":
     case "-":
     case "×":
     case "÷":
-      handleMath(value);
+      handleMath(value);        // Handle math operation
       break;
   }
-} 
+}
 
-  function rerender() {
-    screen.innerText = buffer;
-  }
-  
+// Update the display with the current buffer
+function rerender() {
+  screen.innerText = buffer;
+}
+
+// Initialize the calculator by setting up the event listener
 function init() {
   document
-    .querySelector(".class-buttons")
+    .querySelector(".class-buttons") // Attach event listener to all buttons
     .addEventListener("click", function (event) {
-      buttonClick(event.target.innerText);
+      buttonClick(event.target.innerText); // Call buttonClick on button click
     });
 }
 
-init(); //init update
+init(); // Initialize the calculator
